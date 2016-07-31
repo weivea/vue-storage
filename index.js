@@ -2,7 +2,7 @@
  * Created by weijianli on 16/7/23.
  */
 import {storage,session} from './lib/src';
-function plugin(Vue) {
+function vueStorage(Vue) {
   Object.defineProperties(Vue.prototype, {
     $storageBind: {
       get() {
@@ -47,6 +47,6 @@ function plugin(Vue) {
   });
 }
 if (typeof window !== 'undefined' && window.Vue) {
-  window.Vue.use(plugin);
+  window.Vue.use(vueStorage);
 }
-export default plugin;
+export default vueStorage

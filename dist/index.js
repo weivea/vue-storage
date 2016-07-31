@@ -1,1 +1,100 @@
-!function(e){function t(o){if(s[o])return s[o].exports;var n=s[o]={exports:{},id:o,loaded:!1};return e[o].call(n.exports,n,n.exports,t),n.loaded=!0,n.exports}var s={};return t.m=e,t.c=s,t.p="",t(0)}([function(e,t,s){e.exports=s(1)},function(e,t,s){"use strict";function o(e){Object.defineProperties(e.prototype,{$storageBind:{get:function(){var e="vue"+this._uid;return function(t){if(!t)return void(n.storage[e]={});if("[object Object]"!=Object.prototype.toString.call(t))throw new Error("vue-storage:$storageBind(data) needs data as like as [object Object]!!");return n.storage[e]||(n.storage[e]={}),t=Object.assign(t,n.storage[e]),t=Object.assign(n.storage[e],t),t.$saveData=n.storage.$saveData,t}}},$sessionBind:{get:function(){var e="vue"+this._uid;return function(t){if(!t)return void(n.session[e]={});if("[object Object]"!=Object.prototype.toString.call(t))throw new Error("vue-storage:$sessionBind(data) needs data as like as [object Object]!!");return n.session[e]||(n.session[e]={}),t=Object.assign(t,n.session[e]),t=Object.assign(n.session[e],t),t.$saveData=n.session.$saveData,t}}}})}Object.defineProperty(t,"__esModule",{value:!0});var n=s(2);"undefined"!=typeof window&&window.Vue&&window.Vue.use(o),t["default"]=o},function(e,t){"use strict";function s(e,t){return new Proxy(e,{set:function(e,n,r,a){"[object Object]"==Object.prototype.toString.call(r)&&(r=Object.assign(s({},t),r));var i=Reflect.set(e,n,r,a);return o(t),i}})}function o(e){1==e?n||(n=setTimeout(function(){sessionStorage.__vue_session=JSON.stringify(a),n=void 0},0)):2==e&&(r||(r=setTimeout(function(){localStorage.__vue_storage=JSON.stringify(i),r=void 0},0)))}Object.defineProperty(t,"__esModule",{value:!0});var n,r,a=s({},1),i=s({},2);sessionStorage.__vue_session&&(t.session=a=Object.assign(a,JSON.parse(sessionStorage.__vue_session))),localStorage.__vue_storage&&(t.storage=i=Object.assign(i,JSON.parse(localStorage.__vue_storage))),a.$saveData=function(){o(1)},i.$saveData=function(){o(2)},t.session=a,t.storage=i}]);
+'use strict';
+
+/**
+ * Created by weijianli on 16/7/24.
+ */
+var timer1;
+var timer2;
+var session = proxyObj({},1);
+var storage = proxyObj({},2);
+if(sessionStorage.__vue_session){
+  session = Object.assign(session,JSON.parse(sessionStorage.__vue_session));
+}
+if(localStorage.__vue_storage) {
+  storage = Object.assign(storage,JSON.parse(localStorage.__vue_storage));
+}
+session.$saveData=()=>{
+  saveDate(1);
+};
+storage.$saveData=()=>{
+  saveDate(2);
+};
+function proxyObj(obj,type) {
+  return new Proxy(obj, {
+    set (target, key, value, receiver) {
+      if(Object.prototype.toString.call(value) == "[object Object]"){
+        value =  Object.assign(proxyObj({},type),value);
+      }
+      var re = Reflect.set(target, key, value, receiver);
+      saveDate(type);
+      return re;
+    }
+  })
+}
+function saveDate(type) {
+  if(type == 1){
+    if(!timer1){
+      timer1 = setTimeout(function () {
+        sessionStorage.__vue_session = JSON.stringify(session);
+        timer1 = undefined;
+      },0);
+    }
+  }else if(type == 2){
+    if(!timer2){
+      timer2 = setTimeout(function () {
+        localStorage.__vue_storage = JSON.stringify(storage);
+        timer2 = undefined;
+      },0);
+    }
+  }
+}
+
+function vueStorage(Vue) {
+  Object.defineProperties(Vue.prototype, {
+    $storageBind: {
+      get() {
+        var property = 'vue'+this._uid;
+        return function (data) {
+          if(!data){
+            storage[property] = {};return;
+          }
+          if(Object.prototype.toString.call(data) != "[object Object]"){
+            throw new Error('vue-storage:$storageBind(data) needs data as like as [object Object]!!');
+          }
+          if(!storage[property]){
+            storage[property] = {};
+          }
+          data = Object.assign(data,storage[property]);
+          data = Object.assign(storage[property],data);
+          data.$saveData = storage.$saveData;
+          return data;
+        };
+      }
+    },
+    $sessionBind: {
+      get() {
+        var property = 'vue'+this._uid;
+        return function (data) {
+          if(!data){
+            session[property] = {};return;
+          }
+          if(Object.prototype.toString.call(data) != "[object Object]"){
+            throw new Error('vue-storage:$sessionBind(data) needs data as like as [object Object]!!');
+          }
+          if(!session[property]){
+            session[property] = {};
+          }
+          data = Object.assign(data,session[property]);
+          data = Object.assign(session[property],data);
+          data.$saveData = session.$saveData;
+          return data;
+        };
+      }
+    }
+  });
+}
+if (typeof window !== 'undefined' && window.Vue) {
+  window.Vue.use(vueStorage);
+}
+
+module.exports = vueStorage;
