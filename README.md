@@ -2,7 +2,7 @@
 ***
 
 基于sessionStorage,localStorage的vue插件,让本地存储与$data数据关联,
-目的是让大家在vue上更好的使用本地存储.
+目的是让大家在vue上更方便的使用本地存储.
 
 ## usage
 
