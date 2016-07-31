@@ -10,6 +10,8 @@
 
 运行:`npm install; npm run build`
 
+[在线预览](https://weivea.github.io/vue-storage/)
+
 ### install
 ```
 npm install vue-storage-weivea
