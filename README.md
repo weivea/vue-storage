@@ -12,9 +12,10 @@
 
 ### install
 ```
-npm install vue-storage
+npm install vue-storage-weivea
 
 ```
+话说现npm也需要namespace了呢
 
 ### use
 
