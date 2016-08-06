@@ -1,6 +1,11 @@
 # vue-storage
 ***
 
+##不知道为什么从20160805号开始,Proxy在chrome上,不以json对象的形式表现了,所以,Proxy在交由vue的data处理是报错,该插件,暂时不能使用了~~~
+
+***
+
+
 基于sessionStorage,localStorage的vue插件,让本地存储与$data数据关联,
 目的是让大家在vue上更方便的使用本地存储.
 
