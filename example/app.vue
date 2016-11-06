@@ -26,7 +26,7 @@
         <sub></sub>
     </div>
 </template>
-<script>
+<script type="text/ecmascript-6">
     import sub from './sub.vue'
     export default {
         data(){

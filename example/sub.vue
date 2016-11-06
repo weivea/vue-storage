@@ -16,7 +16,7 @@
     <p>_<span v-for="item in session.list" track-by="$index">{{item}}_</span></p>
 
 </template>
-<script>
+<script type="text/ecmascript-6">
     export default {
         data(){
             return{

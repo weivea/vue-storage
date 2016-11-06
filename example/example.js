@@ -3,7 +3,7 @@
  */
 
 import Vue from 'vue'
-import vueStorage from'./vue-storage/index'
+import vueStorage from'../index'
 import app from './app.vue'
 
 Vue.use(vueStorage);

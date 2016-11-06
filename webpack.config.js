@@ -3,10 +3,10 @@ var webpack = require('webpack');
 module.exports = {
   devtool: 'source-map',
   entry: [
-    './example.js'
+    './example/example.js'
   ],
   output: {
-    path: 'dist',
+    path: 'example/dist',
     filename: 'bundle.js',
     publicPath: 'dist'
   },
