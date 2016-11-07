@@ -4,12 +4,13 @@
     <h1 style="text-align: center">请在下面输入框输入内容,然后刷新看看</h1>
     session:sessionStorage
     <form  style="text-align: center">
-        <input type="text"  v-model="session.form.a">
-        内容:{{session.form.a}}
+        <input type="text"  v-model="form.a">
+        内容:{{form.a}}
         <br>
-        <input type="text"  v-model="session.form.b">
-        内容:{{session.form.b}}
+        <input type="text"  v-model="form.b">
+        内容:{{form.b}}
         <br>
+        a:{{a}}
     </form>
     storage:localStorage
     <form  style="text-align: center">
@@ -26,26 +27,73 @@
         <sub></sub>
     </div>
 </template>
-<script type="text/ecmascript-6">
+<script type="text/babel">
     import sub from './sub.vue'
     export default {
-        data(){
+        data:function(){
+            var self = this;
+            var ar = {
+                ccc:123,
+                ddd:234
+            };
             return{
-                session:{
-                    form:{
-                        a:1,
-                        b:2
-                    }
-                },
-                storagea:{
-                    c:3,
-                    d:5
-                }
+                form:this.$session.form,
+                    ...ar,
+                a:(()=>{
+                    var flag = false;
+                    setTimeout(function(){
+                        var dsp = Object.getOwnPropertyDescriptor(self.$data,'a')
+                        var s1 = dsp.set;
+                        dsp.set=function(x){
+                            s1(x);
+                            if(!flag){
+                                flag = true;
+                                self.$session.form.a = x;
+                            }else{
+                                flag = false;
+                            }
+
+                        }
+                        Object.defineProperty(self.$data,'a',dsp);
+                        var dsp2 = Object.getOwnPropertyDescriptor(self.$session.form,'a')
+                        var s2 = dsp2.set;
+                        dsp2.set=function(x){
+                            s2(x);
+                            if(!flag){
+                                flag = true;
+                                self.$data.a = x;
+                            }else{
+                                flag = false;
+                            }
+                        };
+                        Object.defineProperty(self.$session.form,'a',dsp2);
+                    },0)
+//                    Object.defineProperty(self.$data,'a',Object.getOwnPropertyDescriptor(this.$session.form,'a'));
+
+                    return this.$session.form.a;
+                })()
             }
         },
-        created(){
-            this.session = this.$sessionBind(this.session);
-            this.storagea = this.$storageBind(this.storagea);
+        computed:{
+//            session:function(){
+//                return this.$session;
+//            },
+            storagea: function () {
+                return this.$storage
+            }
+        },
+        created:function(){
+           // console.log(this.$session,this.$storage)
+            var self = this;
+            setTimeout(function(){
+                self.form.a = 2000;
+               // console.log(self.$data.a)
+
+            },3000)
+            setTimeout(function(){
+                self.a = 5000;
+                // console.log(self.$data.a)
+            },5000)
         },
         components:{
             sub:sub
