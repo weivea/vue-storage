@@ -22,36 +22,40 @@
         <br>
     </form>
     <hr>
-
     <div>
-        <!--<sub></sub>-->
+        <p>dataTree:no Cache!</p>
+        <span v-for="item in dataTree">{{item.w}}</span>
+        <button @click="add">add</button>
+    </div>
+    <hr>
+    <div>
+        <sub></sub>
     </div>
 </template>
 <script type="text/babel">
-//    import sub from './sub.vue'
+    import sub from './sub.vue'
     export default {
         data:function(){
             return{
-                form:{
-                    a:'1',
-                    b:'2'
-                },
-                storage:{
-                    c:'',
-                    d:''
-                }
-
+                form:this.$twig.session.form,
+                storage:this.$twig.storage,
+                dataTree:this.$twig.dataTree
             }
         },
-        computed:{
-
-        },
         created:function(){
-
-        }/*,
+            console.log(this);
+            setTimeout(()=>{
+                this.$twig.session.form.a = 123
+            },5000);
+        },
+        methods:{
+            add:function(){
+                this.dataTree.push({w:this.dataTree.length+1});
+            }
+        },
         components:{
             sub:sub
-        }*/
+        }
 
     }
 </script>

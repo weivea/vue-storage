@@ -3,11 +3,11 @@
     <hr>
     <h1 style="text-align: center">请在下面输入框输入内容,然后刷新看看</h1>
     <form  style="text-align: center">
-        <input type="text"  v-model="form.a">
-        内容:{{form.a}}
+        <input type="text"  v-model="c">
+        内容:{{d}}
         <br>
-        <input type="text"  v-model="form.b">
-        内容:{{form.b}}
+        <input type="text"  v-model="d">
+        内容:{{c}}
         <br>
     </form>
     <hr>
@@ -16,9 +16,7 @@
 <script type="text/babel">
     export default {
         data:function(){
-            return{
-                form:this.$session.form
-            }
+            return this.$twig.storage
         },
         methods:{
             addOne:function() {
