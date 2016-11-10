@@ -35,6 +35,6 @@
   },
   "dependencies": {
     "vue": "^1.0.8",
-    "vue-storage-weivea": "^1.0.0"
+    "vue-twig": "^1.0.1"
   }
 }
