@@ -43,7 +43,6 @@
             }
         },
         created:function(){
-            console.log(this);
             setTimeout(()=>{
                 this.$twig.session.form.a = 123
             },5000);
